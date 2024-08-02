@@ -1,9 +1,12 @@
+from aiogram import Bot, Dispatcher
+import text_handlers, callback_handlers, command_handlers
+
+
+import asyncio
 import os
 from dotenv import load_dotenv
 import logging
-from aiogram import Bot, Dispatcher
-import handlers
-import asyncio
+
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -17,8 +20,9 @@ logging.basicConfig(level=logging.INFO)
 TOKEN = os.getenv("TOKEN")
 bot = Bot(token=TOKEN)
 dispatch = Dispatcher()
-dispatch.include_router(handlers.command_router)
-dispatch.include_router(handlers.text_router)
+dispatch.include_router(command_handlers.command_router)
+dispatch.include_router(text_handlers.text_router)
+dispatch.include_router(callback_handlers.callback_router)
 
 async def main():
     await dispatch.start_polling(bot)
