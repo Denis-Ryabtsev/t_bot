@@ -3,11 +3,14 @@ from aiogram.filters import Command
 from aiogram.types import Message
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
+import asyncio
+from datetime import datetime, timedelta
 
 from protect import check_user
 
 
 command_router = Router()
+user_time = ""
 
 @command_router.message(Command("buttons"))
 async def delete_message(message: Message):
@@ -42,3 +45,28 @@ async def help_command(message: Message):
         await message.answer(f"Имеется много чего, но пока ничего нет")
     else:
         await message.answer(f"Нет доступа, щенок ебаный")
+
+@command_router.message(Command("notify"))
+async def notify_command(message: Message):
+    await message.answer(f"Введи время. Формат ЧЧ:ММ")
+    @command_router.message(lambda message: True)
+    async def get_usertime(message: Message):
+        try:
+            msg_time = datetime.strptime(message.text, "%H:%M").time()
+            user_time = msg_time
+            await message.answer(f"Уведомление установлено на {user_time}")
+            #command_router.message.remove(get_usertime)
+            asyncio.create_task(send_notify(message.from_user.id, 
+                                            user_time, 
+                                            message.bot))
+        except:
+            await message.answer(f"Неверный формат времени")
+
+async def send_notify(user_id: str, time: str, bot: object):
+    now_time = datetime.now()
+    target = datetime.combine(now_time.date(), time)
+    if target < now_time:
+        target += timedelta(days=1)
+    wait_time = (target - now_time).total_seconds()
+    await asyncio.sleep(wait_time)
+    await bot.send_message(user_id, f"Просыпайся, дура, уже {time}")
