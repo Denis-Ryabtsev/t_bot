@@ -93,4 +93,4 @@ async def handle_location(message: types.Message):
     await message.bot.delete_message(chat_id=del_mess.chat.id, 
                                      message_id=del_mess.message_id)
     data = await get_weather(latitude, longitude)
-    await message.answer(f"Готово, получай данные:\n{data}")
+    await message.answer(f"Готово, получай данные:\n\n{data}")
