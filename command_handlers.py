@@ -102,16 +102,6 @@ async def handle_location(message: types.Message):
     data = await get_weather(latitude, longitude)
     await message.answer(f"Готово, получай данные:\n\n{data}")
 
-# @command_router.message(Command("gif"))
-# async def gif_command(message: Message):
-#     await message.answer(f"Введите тематику")
-
-# @command_router.message()
-# async def send_gif(message: Message):
-#     print(message.text)
-#     await message.bot.send_animation(message.chat.id, 
-#                                      await get_gif(message.text))
-    
 @command_router.message(Command("gif"))
 async def gif_command(message: Message, state: FSMContext):
     await message.answer(f"Введите тематику")
