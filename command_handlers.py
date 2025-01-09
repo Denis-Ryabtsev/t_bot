@@ -32,7 +32,7 @@ async def delete_message(message: Message):
                             reply_markup=keyboard
                             )
     else:
-        await message.answer(f"Нет доступа, щенок ебаный")
+        await message.answer(f"Нет доступа")
 
 @command_router.message(Command("start"))
 async def start_command(message: Message):
@@ -45,14 +45,14 @@ async def start_command(message: Message):
                              "полный функционал, перейдите на /help", 
                              reply_markup=keyboard)
     else:
-        await message.answer(f"Нет доступа, щенок ебаный")
+        await message.answer(f"Нет доступа")
 
 @command_router.message(Command("help"))
 async def help_command(message: Message):
     if check_user(message.from_user.id):
         await message.answer(f"Имеется много чего, но пока ничего нет")
     else:
-        await message.answer(f"Нет доступа, щенок ебаный")
+        await message.answer(f"Нет доступа")
 
 @command_router.message(Command("notify"))
 async def notify_command(message: Message):
